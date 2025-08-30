@@ -2,8 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Shadowbound</title>
+
+  <!-- SEO / Social -->
+  <meta name="description" content="Shadowbound is a brutal 2D pixel-art platformer with a horror twist. Your only lifeline? Light. Time your movement, plan your jumps, and don’t get caught in the dark."/>
+  <meta property="og:title" content="Shadowbound"/>
+  <meta property="og:description" content="Brutal 2D pixel-art platformer with a horror twist."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="banner.png"/>
+  <meta name="theme-color" content="#0a0b10"/>
+
+  <!-- Structured data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -12,18 +22,12 @@
     "url": "https://xs-corp.github.io/shadowbound/",
     "image": "https://xs-corp.github.io/shadowbound/banner.png",
     "description": "Shadowbound is a brutal 2D pixel-art platformer with a horror twist. Your only lifeline? Light. Some lamps stay lit. Others fade out after just 3 seconds. Time your movement, plan your jumps, and don’t get caught in the dark — it’s game over.",
-    "author": {
-      "@type": "Organization",
-      "name": "XGames Super Corporation LLC"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "XGames Super Corporation LLC"
-    },
+    "author": { "@type": "Organization", "name": "XGames Super Corporation LLC" },
+    "publisher": { "@type": "Organization", "name": "XGames Super Corporation LLC" },
     "operatingSystem": ["Windows", "macOS"],
     "applicationCategory": "Game",
     "genre": ["Adventure", "Horror"],
-    "datePublished": "2025-07-01",
+    "datePublished": "2025-06-10",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -32,123 +36,207 @@
     }
   }
   </script>
+
   <style>
     :root{
-      --bg:#0a0b10; --fg:#e7e8ec; --muted:#9aa3b2;
-      --line:#1b1e27; --accent:#7f5af0; --accent-2:#00d4ff;
-      --radius:12px; --shadow:0 8px 20px rgba(0,0,0,.35);
-      --maxw:1100px; --pad:20px;
+      --bg:#0a0b10; --panel:#0f1118; --ink:#e8ecf1; --muted:#9aa3b2;
+      --line:#1c2230; --accent:#7f5af0; --accent2:#00d4ff; --warn:#ff2a2a;
+      --radius:14px; --shadow:0 14px 40px rgba(0,0,0,.35);
+      --maxw:1200px; --pad:24px;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
     img{max-width:100%;display:block}
     a{color:var(--accent);text-decoration:none}
-    .container{max-width:var(--maxw);margin:0 auto;padding:var(--pad)}
-    .card{border:1px solid var(--line);border-radius:var(--radius);background:#0f1118;box-shadow:var(--shadow)}
-    .section{margin:24px 0}
+    .container{max-width:var(--maxw); margin:0 auto; padding:0 var(--pad)}
 
-    /* Hero */
-    .hero{position:relative;overflow:hidden}
-    .hero-media{
-      position:relative;border-radius:var(--radius);
-      background:#0e1118 url('banner.png') center/cover no-repeat;
-      aspect-ratio: 16/9; max-height:480px;
+    /* --- HERO (full-bleed) --- */
+    .hero{
+      position:relative; width:100vw; margin-left:50%; transform:translateX(-50%);
+      aspect-ratio: 16/7; max-height:72vh; min-height:360px; overflow:hidden;
+      background:#0d1016 url('banner.png') center/cover no-repeat;
+      border-bottom:1px solid var(--line);
     }
-    .hero-media::after{
-      content:""; position:absolute; inset:0;
-      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.55) 100%);
+    .hero::before{
+      content:""; position:absolute; inset:-2px;
+      background:
+        radial-gradient(1200px 380px at 20% 88%, rgba(255,42,42,.22), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.65) 60%, rgba(0,0,0,.9));
+      pointer-events:none;
     }
-    .hero-title{
-      position:absolute; left:16px; bottom:14px; right:16px;
-      font-weight:800; letter-spacing:.02em; text-transform:uppercase;
-      font-size:clamp(28px,5.6vw,56px); line-height:1;
+    .hero-noise{
+      position:absolute; inset:0; opacity:.08; mix-blend-mode:soft-light;
+      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.1) 0, rgba(255,255,255,.1) 1px, transparent 1px, transparent 2px);
+      animation: flicker 8s linear infinite;
     }
-    .sub{color:var(--muted); font-size:12px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:6px}
+    @keyframes flicker{
+      0%,100%{opacity:.07} 50%{opacity:.12}
+    }
+    .hero-inner{
+      position:absolute; inset:0; display:grid; place-items:end start; padding: clamp(18px, 4vw, 40px);
+    }
+    .title-wrap{ max-width:min(100%, 900px) }
+    .kicker{
+      display:inline-block; padding:.35rem .7rem; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+      color:#d5d8e1; background:rgba(0,0,0,.4); border:1px solid var(--line); border-radius:999px;
+      backdrop-filter: blur(4px);
+    }
+    .title{
+      margin:.6rem 0 0; line-height:.98; letter-spacing:.01em;
+      font-weight:900; text-transform:uppercase;
+      font-size:clamp(32px, 6vw, 72px);
+      text-shadow: 0 10px 40px rgba(0,0,0,.6);
+    }
+    .title .glow{
+      display:inline-block; padding:.12em .2em .08em;
+      background:linear-gradient(90deg, var(--ink), #d6d8ff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      filter: drop-shadow(0 0 18px rgba(255,255,255,.15));
+    }
+    .hero-cta{
+      margin-top: clamp(12px, 1.6vw, 18px);
+      display:flex; gap:12px; align-items:center;
+    }
 
-    /* Carousel */
-    .carousel .viewport{position:relative;overflow:hidden;border-radius:var(--radius)}
-    .viewport{background:#0f121a}
-    .viewport .track{display:flex;transition:transform .45s ease-in-out;will-change:transform}
-    .viewport{aspect-ratio:16/9}
-    .slide{flex:0 0 100%;position:relative}
-    .slide img.pixel{width:100%;height:100%;object-fit:cover;image-rendering: pixelated}
-    .slide iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+    /* --- BUTTONS --- */
+    .btn{
+      display:inline-flex; align-items:center; gap:12px;
+      padding:14px 18px; border-radius:12px; border:1px solid var(--line);
+      background:#141827; color:#fff; cursor:pointer;
+      transition:transform .12s ease, background .15s ease, box-shadow .15s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(0) scale(.996) }
+    .btn:hover{ background:#181c2f }
+    .btn-large{
+      padding:18px 22px; font-size:1.05rem; font-weight:700; letter-spacing:.02em;
+      background:linear-gradient(180deg,#1d2238,#161a2a);
+      border:1px solid #272e46;
+    }
+    .btn-accent{
+      background:linear-gradient(90deg, var(--warn), #ff6a3d);
+      border:1px solid rgba(255,42,42,.4);
+      text-shadow:0 1px 0 rgba(0,0,0,.35);
+    }
+    .btn-accent:hover{
+      filter:saturate(1.05) brightness(1.02);
+      box-shadow:0 12px 40px rgba(255,42,42,.25);
+      transform:translateY(-1px);
+    }
+
+    /* --- MAIN --- */
+    main{ padding: clamp(18px, 4vw, 38px) 0 80px }
+    .section{ margin: clamp(18px, 3.4vw, 34px) 0 }
+    .card{
+      border:1px solid var(--line); border-radius:var(--radius);
+      background:var(--panel); box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    /* --- CAROUSEL --- */
+    .carousel .viewport{ position:relative; overflow:hidden; border-radius:var(--radius); background:#0f121a }
+    .viewport{ aspect-ratio:16/9 }
+    .track{ display:flex; transition: transform .45s ease; will-change: transform }
+    .slide{ flex:0 0 100%; position:relative }
+    .slide img.pixel{ width:100%; height:100%; object-fit:cover; image-rendering: pixelated }
+    .slide iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
     .nav{
       position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between;
-      padding:8px; pointer-events:none;
+      padding:10px; pointer-events:none;
     }
     .arrow{
-      pointer-events:auto; cursor:pointer;
-      width:42px;height:42px;border-radius:10px;border:1px solid var(--line);
-      background:#121522;color:#fff;display:grid;place-items:center;
-      transition:background .15s ease, transform .15s ease;
+      pointer-events:auto; cursor:pointer; width:48px; height:48px; border-radius:12px;
+      border:1px solid var(--line); background:#141827; color:#fff; display:grid; place-items:center;
+      font-size:20px; transition: transform .12s ease, background .15s ease;
     }
-    .arrow:hover{background:#171a29; transform:translateY(-1px)}
+    .arrow:hover{ background:#181c2f; transform:translateY(-1px) }
     .dots{
-      position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
-      display:flex; gap:8px; padding:6px 8px; border-radius:999px; background:rgba(0,0,0,.4); border:1px solid var(--line);
+      position:absolute; left:50%; bottom:12px; transform:translateX(-50%);
+      display:flex; gap:8px; padding:6px 10px; border-radius:999px;
+      background:rgba(0,0,0,.4); border:1px solid var(--line); backdrop-filter: blur(4px);
     }
-    .dot{width:7px;height:7px;border-radius:999px;background:#8690a4;opacity:.6;cursor:pointer}
-    .dot.active{background:var(--accent);opacity:1}
+    .dot{ width:8px; height:8px; border-radius:50%; background:#9aa3b2; opacity:.6; cursor:pointer; border:0 }
+    .dot.active{ background:var(--accent); opacity:1 }
 
-    /* Buttons */
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      padding:12px 16px;border-radius:10px;border:1px solid var(--line);
-      background:#141827;color:#fff;cursor:pointer;transition:transform .12s ease, background .15s ease;
+    /* --- GRID --- */
+    .grid{ display:grid; gap:18px; grid-template-columns:1fr }
+    @media (min-width:880px){ .grid{ grid-template-columns: 2fr 1fr } }
+    .pad{ padding: clamp(14px, 2.4vw, 18px) }
+
+    /* --- TEXT --- */
+    p{ margin:0 0 12px }
+    .muted{ color:var(--muted) }
+    .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
+    .tag{
+      font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#cbd1dc;
+      padding:6px 10px; border:1px solid var(--line); border-radius:999px; background:#121724
     }
-    .btn:hover{background:#181c2f; transform:translateY(-1px)}
-    .btn:active{transform:none}
 
-    /* Grid */
-    .grid{display:grid;gap:16px;grid-template-columns:1fr}
-    @media (min-width:860px){ .grid{grid-template-columns:2fr 1fr} }
+    /* --- META / RATING --- */
+    .meta{ display:grid; gap:12px; padding:16px }
+    .row{ display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line); padding:10px 0 }
+    .row:last-child{ border-bottom:none }
+    .label{ color:var(--muted) }
+    .rating{ display:flex; align-items:center; gap:12px; padding:12px;
+      border:1px solid var(--line); border-radius:12px; background:#111626 }
+    .badge17{ width:44px; height:44px; border-radius:12px; display:grid; place-items:center;
+      background:#231627; color:#fff; font-weight:800; border:1px solid var(--line) }
 
-    /* Text blocks */
-    .pad{padding:16px}
-    .tags{display:flex;gap:8px;flex-wrap:wrap}
-    .tag{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#cbd1dc;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#121724}
+    /* --- DOWNLOAD MODAL --- */
+    .modal{ position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.6); z-index:50 }
+    .modal.open{ display:grid }
+    .modal-card{ width:min(560px, 92vw); background:var(--panel);
+      border:1px solid var(--line); border-radius:16px; box-shadow: var(--shadow); overflow:hidden }
+    .modal-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px 16px 0 16px }
+    .modal-body{ padding:16px; display:grid; gap:12px }
+    .choice{ display:flex; gap:12px; align-items:center; padding:14px;
+      border:1px solid var(--line); border-radius:12px; background:#121625; cursor:pointer }
+    .choice:hover{ background:#151a2b }
+    .os-badge{ width:38px; height:38px; border-radius:10px; display:grid; place-items:center;
+      background:#1b2033; border:1px solid var(--line); font-weight:700 }
+    .progress{ display:none; gap:10px }
+    .progress.show{ display:grid }
+    .bar{ height:12px; border-radius:999px; background:#1a1e2a; overflow:hidden }
+    .fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 2.4s ease }
+    .note{ color:var(--muted); font-size:14px }
+    .close-x{ background:transparent; border:1px solid var(--line); color:#dfe3ee; border-radius:10px; padding:8px 12px; cursor:pointer }
+    .close-x:hover{ background:#161a28 }
 
-    /* Meta */
-    .meta{display:grid;gap:10px;padding:16px}
-    .row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:8px 0}
-    .row:last-child{border-bottom:none}
-    .label{color:var(--muted)}
-    .rating{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#121625}
-    .badge17{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:#231627;color:#fff;font-weight:800;border:1px solid var(--line)}
-
-    /* Modal (download) */
-    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55)}
-    .modal.open{display:grid}
-    .modal-card{width:min(520px,92vw);background:#0f1118;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
-    .modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 0 14px}
-    .modal-body{padding:14px;display:grid;gap:12px}
-    .choice{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:10px;background:#121625;cursor:pointer}
-    .choice:hover{background:#151a2b}
-    .os-badge{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;background:#1b2033;border:1px solid var(--line)}
-    .progress{display:none;gap:8px}
-    .progress.show{display:grid}
-    .bar{height:10px;border-radius:999px;background:#1a1e2a;overflow:hidden}
-    .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 2.2s ease}
-    .note{color:var(--muted);font-size:14px}
+    /* --- FOOTER SPACING --- */
+    .footer-space{ height:40px }
   </style>
 </head>
 <body>
-  <header class="container section hero">
-    <div class="hero-media card" role="img" aria-label="Shadowbound banner">
-      <div class="hero-title">
-        <div class="sub">Brutal 2D pixel‑art platformer</div>
-        Shadowbound
+
+  <!-- HERO -->
+  <header class="hero" role="img" aria-label="Shadowbound banner">
+    <div class="hero-noise"></div>
+    <div class="hero-inner container">
+      <div class="title-wrap">
+        <span class="kicker">Brutal 2D pixel-art platformer</span>
+        <h1 class="title"><span class="glow">Shadowbound</span></h1>
+        <div class="hero-cta">
+          <button class="btn btn-large btn-accent" id="download-hero" aria-label="Download Shadowbound">⬇︎ Download</button>
+          <a class="btn" href="#media" aria-label="View trailer and screenshots">Watch Trailer</a>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="container section">
-    <section class="carousel">
+  <main>
+    <!-- CAROUSEL -->
+    <section id="media" class="container section carousel">
       <div class="viewport card" id="viewport">
         <div class="track" id="track">
           <!-- Slide 0: trailer -->
-          <div class="slide">
+          <div class="slide" aria-label="Shadowbound trailer">
             <iframe id="yt" title="Shadowbound trailer" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen
               src="https://www.youtube.com/embed/2oeDHQGq2vI?rel=0&modestbranding=1&color=white"></iframe>
           </div>
@@ -160,22 +248,23 @@
           <div class="slide"><img class="pixel" src="5.png" alt="Screenshot 5" draggable="false"></div>
           <div class="slide"><img class="pixel" src="6.png" alt="Screenshot 6" draggable="false"></div>
         </div>
-
-        <div class="nav">
-          <button class="arrow" id="prev" aria-label="Previous">⟵</button>
-          <button class="arrow" id="next" aria-label="Next">⟶</button>
+        <div class="nav" aria-hidden="false">
+          <button class="arrow" id="prev" aria-label="Previous slide">⟵</button>
+          <button class="arrow" id="next" aria-label="Next slide">⟶</button>
         </div>
-        <div class="dots" id="dots" aria-label="Slides"></div>
+        <div class="dots" id="dots" aria-label="Slides pagination"></div>
       </div>
     </section>
 
-    <div class="section">
-      <button class="btn" id="download">Download</button>
-    </div>
+    <!-- SECONDARY DOWNLOAD BUTTON -->
+    <section class="container section" style="display:flex;justify-content:center">
+      <button class="btn btn-large btn-accent" id="download" aria-label="Download Shadowbound">⬇︎ Download</button>
+    </section>
 
-    <div class="grid section">
-      <section class="card pad">
-        <p>Shadowbound is a brutal 2D pixel-art platformer with a horror twist. Your only lifeline? Light. Some lamps stay lit. Others fade out after just 3 seconds. Time your movement, plan your jumps, and don’t get caught in the dark — it’s game over.</p>
+    <!-- DESCRIPTION + META -->
+    <section class="container grid section">
+      <article class="card pad">
+        <p><strong>Shadowbound</strong> is a brutal 2D pixel-art platformer with a horror twist. Your only lifeline? <em>Light.</em> Some lamps stay lit. Others fade out after just 3 seconds. Time your movement, plan your jumps, and don’t get caught in the dark — it’s game over.</p>
         <p>There’s no mercy. Just raw, unforgiving gameplay that rewards precision and punishes hesitation. Want to mod the game? Use the Undertale Mod Tool — no official support, but it’s there.</p>
         <p>If you’re looking for an easy ride, look elsewhere. But if you want a real challenge, step into the dark… and try to survive.</p>
         <p>If you’d like to support me, you can send any amount to
@@ -186,13 +275,13 @@
           <span class="tag">#platformer</span>
           <span class="tag">#action</span>
         </div>
-      </section>
+      </article>
 
-      <aside class="card meta">
+      <aside class="card meta" aria-label="Game information">
         <div class="row"><span class="label">Development Stage</span><span>Early Access</span></div>
         <div class="row"><span class="label">Engine/Language</span><span>Game Maker: Studio</span></div>
         <div class="row"><span class="label">Published On</span><span>June 10, 2025</span></div>
-        <div class="rating">
+        <div class="rating" role="note" aria-label="Age rating">
           <div class="badge17">17+</div>
           <div>
             <div style="font-weight:700">Rating: 17+</div>
@@ -200,34 +289,35 @@
           </div>
         </div>
       </aside>
-    </div>
+    </section>
+    <div class="footer-space"></div>
   </main>
 
-  <!-- Download modal -->
+  <!-- DOWNLOAD MODAL -->
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="title">
     <div class="modal-card">
       <div class="modal-head">
         <div id="title" style="font-weight:700">Choose your version</div>
-        <button class="btn" id="close">Close</button>
+        <button class="close-x" id="close" aria-label="Close download dialog">Close</button>
       </div>
       <div class="modal-body">
-        <div class="choice" data-os="mac">
+        <div class="choice" data-os="mac" tabindex="0" role="button" aria-label="Download for macOS">
           <div class="os-badge"></div>
           <div>
             <div style="font-weight:700">macOS</div>
-            <div class="label">Universal build (.dmg)</div>
+            <div class="note">Universal build (.dmg)</div>
           </div>
         </div>
-        <div class="choice" data-os="win">
+        <div class="choice" data-os="win" tabindex="0" role="button" aria-label="Download for Windows">
           <div class="os-badge">⊞</div>
           <div>
             <div style="font-weight:700">Windows</div>
-            <div class="label">Windows 10+ x64 (.zip)</div>
+            <div class="note">Windows 10+ x64 (.zip)</div>
           </div>
         </div>
-        <div class="progress" id="progress">
+        <div class="progress" id="progress" aria-live="polite">
           <div class="note" id="plabel">Preparing your download…</div>
-          <div class="bar"><div class="fill" id="fill"></div></div>
+          <div class="bar" aria-hidden="true"><div class="fill" id="fill"></div></div>
           <div class="note"><span id="pct">0%</span> • CDN mirror</div>
         </div>
       </div>
@@ -235,11 +325,11 @@
   </div>
 
   <!-- Hidden links to trigger download -->
-  <a id="mac" href="Shadowbound-mac.dmg" download hidden>mac</a>
-  <a id="win" href="Shadowbound-win.zip" download hidden>win</a>
+  <a id="mac" href="https://github.com/XS-Corp/shadowbound-the-game/releases/download/0.2.0/Shadowbound-mac.dmg">mac</a>
+  <a id="win" href="https://github.com/XS-Corp/shadowbound-the-game/releases/download/0.2.0/Shadowbound-win.zip">win</a>
 
   <script>
-    // Carousel
+    // ===== Carousel =====
     (function(){
       const track = document.getElementById('track');
       const slides = [...track.children];
@@ -250,7 +340,7 @@
       const yt = document.getElementById('yt');
       const viewport = document.getElementById('viewport');
 
-      let i = 0, timer = null, AUTOPLAY = 4500;
+      let i = 0, timer = null, AUTOPLAY = 5200;
 
       function renderDots(){
         dots.innerHTML = '';
@@ -280,18 +370,27 @@
       next.addEventListener('click', ()=> go(i+1, true));
       viewport.addEventListener('mouseenter', stop);
       viewport.addEventListener('mouseleave', start);
-      // basic touch swipe
+
+      // keyboard
+      viewport.tabIndex = 0;
+      viewport.addEventListener('keydown', (e)=>{
+        if(e.key === 'ArrowLeft') go(i-1, true);
+        if(e.key === 'ArrowRight') go(i+1, true);
+      });
+
+      // touch swipe
       let sx=0; viewport.addEventListener('touchstart', e=> sx = e.touches[0].clientX, {passive:true});
       viewport.addEventListener('touchend', e=>{
         const dx = e.changedTouches[0].clientX - sx;
         if(Math.abs(dx)>40) go(i + (dx<0?1:-1), true);
       });
+
       renderDots(); start();
     })();
 
-    // Download flow
+    // ===== Download flow =====
     (function(){
-      const openBtn = document.getElementById('download');
+      const openBtns = [document.getElementById('download'), document.getElementById('download-hero')].filter(Boolean);
       const modal = document.getElementById('modal');
       const closeBtn = document.getElementById('close');
       const choices = modal.querySelectorAll('.choice');
@@ -302,26 +401,36 @@
       const linkMac = document.getElementById('mac');
       const linkWin = document.getElementById('win');
 
-      function open(){ modal.classList.add('open') }
-      function close(){ modal.classList.remove('open'); progress.classList.remove('show'); fill.style.width='0%'; pct.textContent='0%'; plabel.textContent='Preparing your download…' }
+      function open(){ modal.classList.add('open'); modal.focus(); }
+      function resetProgress(){
+        progress.classList.remove('show');
+        fill.style.width='0%';
+        pct.textContent='0%';
+        plabel.textContent='Preparing your download…';
+      }
+      function close(){ modal.classList.remove('open'); resetProgress(); }
 
-      openBtn.addEventListener('click', open);
+      openBtns.forEach(b=> b.addEventListener('click', open));
       closeBtn.addEventListener('click', close);
       modal.addEventListener('click', (e)=>{ if(e.target===modal) close() });
+      window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')) close() });
 
       choices.forEach(ch=>{
-        ch.addEventListener('click', async ()=>{
+        // click or Enter key
+        const fire = async ()=>{
           progress.classList.add('show');
           // animate fill
           fill.style.width='0%';
           requestAnimationFrame(()=> fill.style.width='100%');
           // faux progress number
           let n=0; const id=setInterval(()=>{ n=Math.min(n+7,100); pct.textContent=n+'%'; if(n===100) clearInterval(id) }, 120);
-          await new Promise(r=> setTimeout(r, 2300));
+          await new Promise(r=> setTimeout(r, 2400));
           plabel.textContent='Ready. Starting download…';
           (ch.dataset.os==='mac' ? linkMac : linkWin).click();
-          setTimeout(close, 900);
-        });
+          setTimeout(close, 950);
+        };
+        ch.addEventListener('click', fire);
+        ch.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); fire(); }});
       });
     })();
   </script>
