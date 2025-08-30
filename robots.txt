@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://xs-corp.github.io/shadowbound/sitemap.xml
