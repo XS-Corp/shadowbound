@@ -318,6 +318,13 @@
             <div class="note">Windows 10+ x64 (.zip)</div>
           </div>
         </div>
+        <div class="choice" data-os="source" tabindex="0" role="button" aria-label="Download Source Code">
+          <div class="os-badge">🖥️</div>
+          <div>
+            <div style="font-weight:700">Source</div>
+            <div class="note">Download full source (.zip)</div>
+          </div>
+        </div>
         <div class="progress" id="progress" aria-live="polite">
           <div class="note" id="plabel">Preparing your download…</div>
           <div class="bar" aria-hidden="true"><div class="fill" id="fill"></div></div>
@@ -330,6 +337,7 @@
   <!-- Hidden links to trigger download -->
   <a id="mac" href="https://github.com/XS-Corp/shadowbound-the-game/releases/download/0.3.0/Shadowbound-mac.dmg">mac</a>
   <a id="win" href="https://github.com/XS-Corp/shadowbound-the-game/releases/download/0.3.0/Shadowbound-win.zip">win</a>
+  <a id="source" href="https://github.com/XS-Corp/shadowbound-the-game/releases/download/0.3.0/SBSource.zip" style="display:none">source</a>
 
   <script>
     // ===== Carousel =====
@@ -419,17 +427,18 @@
       window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')) close() });
 
       choices.forEach(ch=>{
-        // click or Enter key
         const fire = async ()=>{
           progress.classList.add('show');
-          // animate fill
           fill.style.width='0%';
           requestAnimationFrame(()=> fill.style.width='100%');
-          // faux progress number
           let n=0; const id=setInterval(()=>{ n=Math.min(n+7,100); pct.textContent=n+'%'; if(n===100) clearInterval(id) }, 120);
           await new Promise(r=> setTimeout(r, 2400));
           plabel.textContent='Ready. Starting download…';
-          (ch.dataset.os==='mac' ? linkMac : linkWin).click();
+          
+          if(ch.dataset.os==='mac') linkMac.click();
+          else if(ch.dataset.os==='win') linkWin.click();
+          else if(ch.dataset.os==='source') document.getElementById('source').click();
+          
           setTimeout(close, 950);
         };
         ch.addEventListener('click', fire);
